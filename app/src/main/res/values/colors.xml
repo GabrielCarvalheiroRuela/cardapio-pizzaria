@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="orange_light">#f9a825</color> <!-- Laranja claro -->
+    <color name="orange_dark">#ef6c00</color>  <!-- Laranja escuro -->
+    <color name="yellow_soft">#ffe082</color>  <!-- Amarelo suave -->
+    <color name="brown">#372b17</color>
 </resources>
