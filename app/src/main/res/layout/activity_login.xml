@@ -49,7 +49,22 @@
             android:padding="18dp"
             android:inputType="textPassword"/>
 
+        <!-- Texto de Esqueci a Senha -->
+
         <!-- Botão de logar -->
+        <TextView
+            android:id="@+id/forgotPassword"
+            android:layout_width="379dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:gravity="end"
+            android:padding="8dp"
+            android:text="Esqueci minha senha"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
         <Button
             android:id="@+id/loginBtn"
             android:layout_width="match_parent"
