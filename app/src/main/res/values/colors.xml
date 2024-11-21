@@ -6,4 +6,6 @@
     <color name="orange_dark">#ef6c00</color>  <!-- Laranja escuro -->
     <color name="yellow_soft">#ffe082</color>  <!-- Amarelo suave -->
     <color name="brown">#372b17</color>
+    <color name="gray_light">#828282</color>
+    <color name="gray_dark">#c6c6c6</color>
 </resources>

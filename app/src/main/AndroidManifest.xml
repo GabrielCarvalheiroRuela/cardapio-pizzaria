@@ -23,10 +23,10 @@
         -->
 
         <!-- Definindo as atividades -->
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".LoginActivity"></activity>
         <activity android:name=".RegisterActivity"></activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".MainActivity"
             android:theme="@style/Theme.Cardapiopizzaria"
             android:exported="true">
             <intent-filter>

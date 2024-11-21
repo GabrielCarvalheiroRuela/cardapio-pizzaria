@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">cardapio-pizzaria</string>
+
+    <!-- Botao de categorias -->
+    <string name="todos">Todos</string>
+    <string name="pizzas">Pizzas</string>
+    <string name="especiais">Especiais</string>
+    <string name="doces">Doces</string>
+    <string name="bebidas">Bebidas</string>
+    <string name="vinhos">Vinhos</string>
 </resources>

@@ -1,31 +1,133 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
     tools:context=".MainActivity">
 
-    <!-- Texto exibido na tela -->
-    <TextView
-        android:id="@+id/helloWorld"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!-- Barra superior -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="@color/orange_light"
+        android:gravity="center_vertical">
 
-    <!-- Botão de deslogar -->
-    <Button
-        android:id="@+id/logoutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Deslogar"
-        app:layout_constraintTop_toBottomOf="@id/helloWorld"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        <!-- Gerenciamento de perfil -->
+        <ImageButton
+            android:id="@+id/iconUser"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_user"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:tint="@color/black"
+            android:layout_marginEnd="16dp"
+            android:layout_gravity="center_vertical" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <!-- Botao de sair -->
+        <ImageButton
+            android:id="@+id/logoutButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_logout"
+            android:tint="@color/black"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp" />
+    </LinearLayout>
+
+    <!-- Categories Layout -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/categoryLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <Button
+                android:id="@+id/btnTodos"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="8dp"
+                android:text="@string/todos"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/gray_light"
+                android:layout_gravity="center_vertical" />
+
+            <Button
+                android:id="@+id/btnPizzas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pizzas"
+                android:textColor="@color/white"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="@color/gray_light"
+                android:layout_gravity="center_vertical"/>
+
+            <Button
+                android:id="@+id/btnEspeciais"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/especiais"
+                android:textColor="@color/white"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="@color/gray_light"
+                android:layout_gravity="center_vertical"/>
+
+            <Button
+                android:id="@+id/btnDoces"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/doces"
+                android:textColor="@color/white"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="@color/gray_light"
+                android:layout_gravity="center_vertical"/>
+
+            <Button
+                android:id="@+id/btnBebidas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bebidas"
+                android:textColor="@color/white"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="@color/gray_light"
+                android:layout_gravity="center_vertical"/>
+
+            <Button
+                android:id="@+id/btnVinhos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/vinhos"
+                android:textColor="@color/white"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="@color/gray_light"
+                android:layout_gravity="center_vertical"/>
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- RecyclerView Menu de items -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewMenu"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp" />
+
+</LinearLayout>

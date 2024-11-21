@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.cardapio_pizzaria.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding // Usando o ViewBinding
@@ -30,5 +31,26 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             finish() // Finaliza a MainActivity para evitar que o usuário volte para ela
         }
+
+
+        // Preparando
+        binding.iconUser.setOnClickListener {}
+
+        binding.btnTodos.setOnClickListener {}
+
+        binding.btnPizzas.setOnClickListener {}
+
+        binding.btnEspeciais.setOnClickListener {}
+
+        binding.btnDoces.setOnClickListener {}
+
+        binding.btnBebidas.setOnClickListener {}
+
+        binding.btnVinhos.setOnClickListener {}
+
+
+        // Configuração do RecyclerView
+        val recyclerViewMenu = binding.recyclerViewMenu
+
     }
 }
