@@ -1,4 +1,4 @@
-package com.example.cardapio_pizzaria
+package com.example.cardapio_pizzaria.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -16,11 +16,9 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Inicializar o View Binding
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Inicializar o Firebase Auth
         auth = FirebaseAuth.getInstance()
 
         // Ação para o botão de esqueci a senha

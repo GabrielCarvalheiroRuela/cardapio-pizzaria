@@ -20,13 +20,15 @@
         LoginActivity
         RegisterActivity
         MainActivity
+        ProfileActivity
         -->
 
         <!-- Definindo as atividades -->
-        <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".ui.LoginActivity"></activity>
+        <activity android:name=".ui.RegisterActivity"></activity>
+        <activity android:name=".ui.ProfileActivity"></activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:theme="@style/Theme.Cardapiopizzaria"
             android:exported="true">
             <intent-filter>

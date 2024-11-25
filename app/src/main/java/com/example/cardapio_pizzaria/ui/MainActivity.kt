@@ -1,4 +1,4 @@
-package com.example.cardapio_pizzaria
+package com.example.cardapio_pizzaria.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,17 +9,15 @@ import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding // Usando o ViewBinding
+    private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Inicializar o ViewBinding
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Inicializar o Firebase Auth
         auth = FirebaseAuth.getInstance()
 
         // Ação do botão de deslogar usando ViewBinding
@@ -29,12 +27,16 @@ class MainActivity : AppCompatActivity() {
             // Redireciona para a tela de login
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
-            finish() // Finaliza a MainActivity para evitar que o usuário volte para ela
+            finish()
         }
 
-
-        // Preparando
-        binding.iconUser.setOnClickListener {}
+        // Ação do botão de perfil
+        binding.iconUser.setOnClickListener {
+            // Redireciona para a tela de perfil
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         binding.btnTodos.setOnClickListener {}
 
