@@ -24,7 +24,6 @@
             android:layout_height="48dp"
             android:src="@drawable/ic_user"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:tint="@color/black"
             android:layout_marginEnd="16dp"
             android:layout_gravity="center_vertical" />
 
@@ -33,16 +32,24 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <!-- Botao de sair -->
+        <!-- Botão de pedidos -->
+        <ImageButton
+            android:id="@+id/cartButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_carrinho"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="16dp" />
+
+        <!-- Botão de sair -->
         <ImageButton
             android:id="@+id/logoutButton"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/ic_logout"
-            android:tint="@color/black"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp" />
+            android:layout_gravity="center_vertical" />
     </LinearLayout>
 
     <!-- Categories Layout -->

@@ -38,6 +38,12 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
+        // botão do carrinho
+        binding.cartButton.setOnClickListener {
+            val intent = Intent(this, CarrinhoActivity::class.java)
+            startActivity(intent)
+        }
+
         binding.btnTodos.setOnClickListener {}
 
         binding.btnPizzas.setOnClickListener {}

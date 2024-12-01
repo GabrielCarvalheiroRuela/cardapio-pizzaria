@@ -21,9 +21,11 @@
         RegisterActivity
         MainActivity
         ProfileActivity
+        CarrinhoActivity
         -->
 
         <!-- Definindo as atividades -->
+        <activity android:name=".ui.CarrinhoActivity"></activity>
         <activity android:name=".ui.LoginActivity"></activity>
         <activity android:name=".ui.RegisterActivity"></activity>
         <activity android:name=".ui.ProfileActivity"></activity>
