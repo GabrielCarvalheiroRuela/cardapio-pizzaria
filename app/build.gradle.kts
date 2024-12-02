@@ -54,6 +54,9 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.firebase:firebase-storage-ktx")
-    implementation ("com.google.android.material:material:1.9.0")
-
+    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.squareup.picasso:picasso:2.8")
+    implementation("androidx.recyclerview:recyclerview:1.3.1")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation ("com.github.bumptech.glide:glide:4.15.1")
 }
