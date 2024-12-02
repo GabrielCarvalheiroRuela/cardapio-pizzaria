@@ -7,44 +7,52 @@
     android:elevation="4dp">
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <!-- Imagem do produto -->
+        <!-- Imagem do produto no canto esquerdo -->
         <ImageView
             android:id="@+id/productImage"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:scaleType="centerCrop"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginEnd="16dp"/>
 
-        <!-- Nome do produto -->
-        <TextView
-            android:id="@+id/productName"
-            android:layout_width="wrap_content"
+        <!-- Coluna com o nome, preço e ingrediente do produto -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="4dp"/>
+            android:layout_weight="1">
 
-        <!-- Preço do produto -->
-        <TextView
-            android:id="@+id/productPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
-            android:layout_marginBottom="8dp"/>
+            <!-- Nome do produto -->
+            <TextView
+                android:id="@+id/productName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="4dp"/>
 
-        <!-- Ingrediente -->
-        <TextView
-            android:id="@+id/productIngredient"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="@android:color/darker_gray"/>
+            <!-- Preço do produto -->
+            <TextView
+                android:id="@+id/productPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:layout_marginBottom="8dp"/>
 
+            <!-- Ingrediente -->
+            <TextView
+                android:id="@+id/productIngredient"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/darker_gray"/>
+
+        </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
