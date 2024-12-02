@@ -3,9 +3,9 @@
 
     <!-- Botao de categorias -->
     <string name="todos">Todos</string>
-    <string name="pizzas">Pizzas</string>
+    <string name="pizzas">Pizzas salgadas</string>
     <string name="especiais">Especiais</string>
-    <string name="doces">Doces</string>
+    <string name="doces">Pizzas doces</string>
     <string name="bebidas">Bebidas</string>
     <string name="vinhos">Vinhos</string>
 </resources>
