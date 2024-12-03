@@ -61,7 +61,6 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Login bem-sucedido
                     Toast.makeText(this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show()
 
                     // Redirecionar para a MainActivity
@@ -69,7 +68,6 @@ class LoginActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 } else {
-                    // Falha no login
                     Toast.makeText(
                         this,
                         "Falha no login: ${task.exception?.message}",
@@ -81,7 +79,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun resetPassword(email: String) {
-        // Validação adicional para verificar se o formato do e-mail é válido
         if (TextUtils.isEmpty(email) || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(this, "Por favor, insira um e-mail válido", Toast.LENGTH_SHORT).show()
             return
@@ -91,10 +88,8 @@ class LoginActivity : AppCompatActivity() {
         auth.sendPasswordResetEmail(email)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    // E-mail de recuperação enviado com sucesso
                     Toast.makeText(this, "E-mail de recuperação enviado para $email", Toast.LENGTH_SHORT).show()
                 } else {
-                    // Falha ao enviar o e-mail de recuperação
                     val errorMessage = task.exception?.message ?: "Erro desconhecido"
                     Toast.makeText(this, "Falha ao enviar e-mail de recuperação: $errorMessage", Toast.LENGTH_SHORT).show()
                 }

@@ -18,13 +18,13 @@ class CarrinhoActivity : AppCompatActivity() {
     private lateinit var adapter: CarrinhoAdapter
     private val db = FirebaseFirestore.getInstance()
     private val user = FirebaseAuth.getInstance().currentUser
+    private var valorTotal: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCarrinhoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Configura o RecyclerView
         binding.recyclerViewCarrinho.layoutManager = LinearLayoutManager(this)
 
         // Recupera os pedidos do Firestore
@@ -34,7 +34,6 @@ class CarrinhoActivity : AppCompatActivity() {
                 if (document.exists()) {
                     val pedidos = document.get("pedidos") as? List<Map<String, Any>> ?: emptyList()
 
-                    // Verifique se há pedidos no Firestore
                     if (pedidos.isEmpty()) {
                         Toast.makeText(this, "Nenhum pedido encontrado", Toast.LENGTH_SHORT).show()
                     } else {
@@ -43,21 +42,27 @@ class CarrinhoActivity : AppCompatActivity() {
                                 id = pedido["id"] as? String ?: "",
                                 nome = pedido["nome"] as? String ?: "",
                                 preco = (pedido["preco"] as? Number)?.toDouble() ?: 0.0,
-                                quantidade = pedido["quantidade"] as? Int ?: 1,  // Aqui o valor da quantidade deve ser retirado do Firestore
+                                quantidade = (pedido["quantidade"] as? Number)?.toInt() ?: 1,
                                 url = pedido["url"] as? String ?: "",
                                 ingrediente = pedido["ingrediente"] as? String ?: ""
                             )
                         }
 
+                        // Calcula o valor total do pedido
+                        valorTotal = pedidosConvertidos.sumOf {
+                            it.preco * it.quantidade
+                        }
+
+                        binding.textViewTotal.text = "Total: R$${"%.2f".format(valorTotal)}"
+
                         // Configura o adapter do RecyclerView
                         adapter = CarrinhoAdapter(
                             pedidosConvertidos.toMutableList(),
-                            onQuantidadeAlterada = { produtoId, novaQuantidade ->
-                                produtoId.quantidade = novaQuantidade
-                                atualizarPedidoNoFirestore(produtoId) // Atualiza a quantidade no Firestore
+                            onQuantidadeAlterada = { produto, novaQuantidade ->
+                                atualizarQuantidadeNoFirestore(produto.id, novaQuantidade)
                             },
                             onProdutoRemovido = { produtoId ->
-                                removerProdutoDoFirestore(produtoId) // Passa o ID para remoção
+                                removerProdutoDoFirestore(produtoId)
                             }
                         )
 
@@ -77,42 +82,69 @@ class CarrinhoActivity : AppCompatActivity() {
         // Configuração do botão voltar para a MainActivity
         binding.BackIcon.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
-            finish() // Finaliza a CarrinhoActivity para não ficar na pilha de atividades
+            finish()
+        }
+
+        // Configuração do botão Confirmar Pedido
+        binding.buttonConfirmarPedido.setOnClickListener {
+            user?.let { user ->
+                val userRef = db.collection("user").document(user.uid)
+                userRef.update("pedidos", FieldValue.delete())
+                    .addOnSuccessListener {
+                        Toast.makeText(this, "Pedido realizado com sucesso!", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(this, "Erro ao confirmar pedido!", Toast.LENGTH_SHORT).show()
+                    }
+            } ?: run {
+                Toast.makeText(this, "Usuário não autenticado", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
-    private fun atualizarPedidoNoFirestore(produto: Produto) {
+    // Atualizar quantidade do item no pedido
+    private fun atualizarQuantidadeNoFirestore(produtoId: String, novaQuantidade: Int) {
         user?.let { usuario ->
             val userRef = db.collection("user").document(usuario.uid)
 
-            // Atualiza a quantidade do produto no Firestore
-            userRef.collection("pedidos").document(produto.id).update("quantidade", produto.quantidade)
-                .addOnSuccessListener {
-                    Toast.makeText(this, "Quantidade atualizada!", Toast.LENGTH_SHORT).show()
-                }
-                .addOnFailureListener {
-                    Toast.makeText(this, "Erro ao atualizar quantidade!", Toast.LENGTH_SHORT).show()
-                }
-        }
-    }
-
-    private fun removerProdutoDoFirestore(produtoId: String) {
-        user?.let { usuario ->
-            val userRef = db.collection("user").document(usuario.uid)
-
-            // Recupera a lista de pedidos do Firestore
             userRef.get().addOnSuccessListener { document ->
                 if (document.exists()) {
                     val pedidos = document.get("pedidos") as? List<Map<String, Any>> ?: emptyList()
 
-                    // Encontre o produto no array de pedidos usando o id
+                    val produto = pedidos.find { it["id"] == produtoId }
+
+                    produto?.let {
+                        val produtoAtualizado = it.toMutableMap()
+                        produtoAtualizado["quantidade"] = novaQuantidade
+
+                        userRef.update("pedidos", FieldValue.arrayRemove(it))
+                        userRef.update("pedidos", FieldValue.arrayUnion(produtoAtualizado))
+
+                        atualizarValorTotal()
+                    }
+                }
+            }.addOnFailureListener {
+                Toast.makeText(this, "Erro ao atualizar quantidade!", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    // Remover produto do pedido
+    private fun removerProdutoDoFirestore(produtoId: String) {
+        user?.let { usuario ->
+            val userRef = db.collection("user").document(usuario.uid)
+
+            userRef.get().addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val pedidos = document.get("pedidos") as? List<Map<String, Any>> ?: emptyList()
+
                     val produtoParaRemover = pedidos.find { it["id"] == produtoId }
 
                     produtoParaRemover?.let {
-                        // Remover o produto com o map completo
                         userRef.update("pedidos", FieldValue.arrayRemove(it))
                             .addOnSuccessListener {
-                                // Atualize o adapter após a remoção
                                 val pedidosAtualizados = pedidos.filter { it["id"] != produtoId }
                                 adapter.atualizarLista(pedidosAtualizados.map { produto ->
                                     Produto(
@@ -124,21 +156,33 @@ class CarrinhoActivity : AppCompatActivity() {
                                         ingrediente = produto["ingrediente"] as? String ?: ""
                                     )
                                 })
+                                atualizarValorTotal()
                                 Toast.makeText(this, "Produto removido do pedido!", Toast.LENGTH_SHORT).show()
                             }
                             .addOnFailureListener {
                                 Toast.makeText(this, "Erro ao remover o produto!", Toast.LENGTH_SHORT).show()
                             }
-                    } ?: run {
-                        Toast.makeText(this, "Produto não encontrado para remoção.", Toast.LENGTH_SHORT).show()
                     }
-                } else {
-                    Toast.makeText(this, "Erro ao acessar os pedidos.", Toast.LENGTH_SHORT).show()
                 }
-            }.addOnFailureListener {
-                Toast.makeText(this, "Erro ao buscar os pedidos.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    // Atualizar valor total do pedido
+    private fun atualizarValorTotal() {
+        user?.let { usuario ->
+            val userRef = db.collection("user").document(usuario.uid)
+            userRef.get().addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val pedidos = document.get("pedidos") as? List<Map<String, Any>> ?: emptyList()
+                    valorTotal = pedidos.sumOf {
+                        val preco = (it["preco"] as? Number)?.toDouble() ?: 0.0
+                        val quantidade = (it["quantidade"] as? Number)?.toInt() ?: 1
+                        preco * quantidade
+                    }
+                    binding.textViewTotal.text = "Total: R$${"%.2f".format(valorTotal)}"
+                }
             }
         }
     }
 }
-

@@ -21,15 +21,16 @@
             android:layout_height="48dp"
             android:src="@drawable/ic_back_button"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Voltar" />
+            android:contentDescription="@string/voltar" />
     </LinearLayout>
 
     <!-- Imagem do produto -->
     <ImageView
         android:id="@+id/productImageView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop"
+        android:layout_height="300dp"
+        android:contentDescription="@string/imagem"
+        android:scaleType="fitCenter"
         android:layout_marginTop="16dp" />
 
     <!-- Nome do produto -->
@@ -37,21 +38,23 @@
         android:id="@+id/productNameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nome do Produto"
+        android:text="@string/nome_do_produto"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginTop="16dp"
-        android:gravity="center" />
+        android:gravity="center"
+        android:textColor="#212121" />
 
     <!-- Preço do produto -->
     <TextView
         android:id="@+id/productPriceTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="R$ 0,00"
+        android:text="@string/r_0_00"
         android:textSize="18sp"
         android:layout_marginTop="8dp"
-        android:gravity="center" />
+        android:gravity="center"
+        android:textColor="#212121" />
 
     <!-- Campo para quantidade -->
     <LinearLayout
@@ -64,28 +67,33 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Quantidade:"
+            android:text="@string/quantidade"
             android:textSize="16sp"
-            android:layout_marginEnd="8dp" />
+            android:layout_marginEnd="8dp"
+            android:textColor="#212121" />
 
         <EditText
             android:id="@+id/quantityEditText"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
+            android:layout_width="56dp"
+            android:layout_height="48dp"
+            android:autofillHints=""
             android:inputType="number"
-            android:hint="1"
-            android:gravity="center" />
+            android:hint="@string/_1"
+            android:textColorHint="#757575"
+            android:textColor="#212121"
+            android:gravity="center"
+            android:padding="8dp" />
     </LinearLayout>
 
     <!-- Botão para adicionar ao pedido -->
     <Button
-        android:id="@+id/addToOrderButton"
-        android:layout_width="match_parent"
+        android:id="@+id/adionar_item_pedido"
+        android:layout_width="300dp"
+        android:layout_gravity="center"
         android:layout_height="wrap_content"
-        android:text="Adicionar ao Pedido"
+        android:text="@string/adicionar_ao_pedido"
         android:layout_marginTop="24dp"
         android:backgroundTint="@color/orange_light"
-        android:textColor="#FFFFFF"
+        android:textColor="#212121"
         android:textAllCaps="false" />
-
 </LinearLayout>

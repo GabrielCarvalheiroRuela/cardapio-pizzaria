@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 
-class ProductDetailsActivity : AppCompatActivity() {
+class ProdutoActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProdutoBinding
     private val db = FirebaseFirestore.getInstance()
@@ -37,7 +37,7 @@ class ProductDetailsActivity : AppCompatActivity() {
         }
 
         // Botão Adicionar ao Pedido
-        binding.addToOrderButton.setOnClickListener {
+        binding.adionarItemPedido.setOnClickListener {
             val quantidade = binding.quantityEditText.text.toString().toIntOrNull()
 
             if (quantidade != null && quantidade > 0) {
@@ -49,17 +49,15 @@ class ProductDetailsActivity : AppCompatActivity() {
     }
 
     private fun adicionarAoPedido(nome: String, preco: Double, ingrediente: String, quantidade: Int, url: String) {
-        // Gerar um ID único para o produto usando o timestamp
         val produtoId = System.currentTimeMillis().toString()
 
-        // Adicionando o campo 'id' ao pedido
         val pedidoItem = mapOf(
-            "id" to produtoId, // ID único para cada produto
+            "id" to produtoId,
             "nome" to nome,
             "preco" to preco,
             "ingrediente" to ingrediente,
             "quantidade" to quantidade,
-            "url" to url // Aqui está o ajuste, agora o URL da imagem também será salvo
+            "url" to url
         )
 
         user?.let { usuario ->
@@ -67,17 +65,47 @@ class ProductDetailsActivity : AppCompatActivity() {
 
             userRef.get().addOnSuccessListener { document ->
                 if (document.exists()) {
-                    // Atualiza o array de pedidos no documento do usuário
-                    userRef.update("pedidos", FieldValue.arrayUnion(pedidoItem))
-                        .addOnSuccessListener {
-                            Toast.makeText(this, "Produto adicionado ao pedido!", Toast.LENGTH_SHORT).show()
-                            finish()
+                    // Recupera a lista de pedidos atual
+                    val pedidos = document.get("pedidos") as? List<Map<String, Any>> ?: emptyList()
+
+                    // Verifica se o produto já existe no array de pedidos
+                    val produtoExistente = pedidos.find { it["nome"] == nome }
+
+                    if (produtoExistente != null) {
+                        // Produto já existe, então só atualiza a quantidade
+                        val quantidadeAtual = produtoExistente["quantidade"] as? Int ?: 0
+                        val novaQuantidade = quantidadeAtual + quantidade
+
+                        // Atualiza o produto com a nova quantidade
+                        val produtoAtualizado = produtoExistente.toMutableMap()
+                        produtoAtualizado["quantidade"] = novaQuantidade
+
+                        // Atualiza o pedido no Firestore
+                        val pedidosAtualizados = pedidos.toMutableList().apply {
+                            remove(produtoExistente)
+                            add(produtoAtualizado)
                         }
-                        .addOnFailureListener {
-                            Toast.makeText(this, "Erro ao adicionar ao pedido!", Toast.LENGTH_SHORT).show()
-                        }
+
+                        userRef.update("pedidos", pedidosAtualizados)
+                            .addOnSuccessListener {
+                                Toast.makeText(this, "Quantidade do produto atualizada!", Toast.LENGTH_SHORT).show()
+                                finish()
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(this, "Erro ao atualizar a quantidade!", Toast.LENGTH_SHORT).show()
+                            }
+                    } else {
+                        // Produto não existe, então adiciona como um novo item
+                        userRef.update("pedidos", FieldValue.arrayUnion(pedidoItem))
+                            .addOnSuccessListener {
+                                Toast.makeText(this, "Produto adicionado ao pedido!", Toast.LENGTH_SHORT).show()
+                                finish()
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(this, "Erro ao adicionar ao pedido!", Toast.LENGTH_SHORT).show()
+                            }
+                    }
                 } else {
-                    // Cria um novo documento com o array inicial de pedidos
                     userRef.set(mapOf("pedidos" to listOf(pedidoItem)))
                         .addOnSuccessListener {
                             Toast.makeText(this, "Produto adicionado ao pedido!", Toast.LENGTH_SHORT).show()
@@ -92,6 +120,4 @@ class ProductDetailsActivity : AppCompatActivity() {
             Toast.makeText(this, "Usuário não autenticado!", Toast.LENGTH_SHORT).show()
         }
     }
-
-
 }

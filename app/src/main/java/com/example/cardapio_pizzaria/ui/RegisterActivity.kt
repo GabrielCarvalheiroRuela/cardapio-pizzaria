@@ -97,7 +97,6 @@ class RegisterActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 Toast.makeText(this, "Usuário cadastrado com sucesso!", Toast.LENGTH_SHORT).show()
 
-                // Redirecionar para a MainActivity
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }

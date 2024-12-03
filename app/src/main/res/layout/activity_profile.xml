@@ -15,10 +15,10 @@
         android:layout_height="48dp"
         android:src="@drawable/ic_back_button"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:tint="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="Voltar" />
+        android:contentDescription="@string/voltar"
+        app:tint="@color/black" />
 
 
 
@@ -27,7 +27,7 @@
         android:id="@+id/descricao_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Seu Nome:"
+        android:text="@string/seu_nome"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/tv_user_email"
@@ -40,7 +40,7 @@
         android:id="@+id/tv_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nome do Usuário"
+        android:text="@string/nome_do_usuario"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/descricao_name"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +52,7 @@
         android:id="@+id/descricao_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Seu E-mail:"
+        android:text="@string/seu_e_mail"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/backButton"
@@ -65,7 +65,7 @@
         android:id="@+id/tv_user_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="email@example.com"
+        android:text="@string/email_example_com"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/descricao_email"
         app:layout_constraintStart_toStartOf="parent"
@@ -75,11 +75,11 @@
     <!-- Botão Deletar Conta -->
     <Button
         android:id="@+id/btn_delete_account"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Deletar Conta"
+        android:text="@string/deletar_conta"
         android:backgroundTint="@color/red"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/tv_user_name"
         app:layout_constraintStart_toStartOf="parent"

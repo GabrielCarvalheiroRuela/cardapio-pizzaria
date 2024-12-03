@@ -81,23 +81,40 @@ class ProfileActivity : AppCompatActivity() {
             .show()
     }
 
-    // Excluir conta
+    // Excluir conta do Firestore e Firebase Auth
     private fun excluirConta() {
         val user = auth.currentUser
-        user?.delete()
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(this, "Conta excluída com sucesso!", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                } else {
+        user?.let { currentUser ->
+            val userId = currentUser.uid
+            firestore.collection("user").document(userId)
+                .delete()
+                .addOnSuccessListener {
+                    currentUser.delete()
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Toast.makeText(this, "Conta excluída com sucesso!", Toast.LENGTH_SHORT).show()
+                                val intent = Intent(this, LoginActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            } else {
+                                Toast.makeText(
+                                    this,
+                                    "Erro ao excluir conta: ${task.exception?.message}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                }
+                .addOnFailureListener { exception ->
                     Toast.makeText(
                         this,
-                        "Erro ao excluir conta: ${task.exception?.message}",
+                        "Erro ao excluir dados no Firestore: ${exception.message}",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-            }
+        } ?: run {
+            Toast.makeText(this, "Usuário não autenticado!", Toast.LENGTH_SHORT).show()
+        }
     }
+
 }

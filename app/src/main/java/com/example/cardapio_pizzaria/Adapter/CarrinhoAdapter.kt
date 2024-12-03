@@ -1,6 +1,5 @@
 package com.example.cardapio_pizzaria.Adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -25,29 +24,30 @@ class CarrinhoAdapter(
                 .error(com.example.cardapio_pizzaria.R.drawable.ic_placeholder)
                 .into(binding.carrinhoImagemProduto)
 
-            // Configura o nome, preço e quantidade
+            // Configura dados do produto
             binding.carrinhoNomeProduto.text = produto.nome
             binding.carrinhoPrecoProduto.text = "R$ ${produto.preco}"
-            binding.carrinhoQuantidadeProduto.text = produto.quantidade.toString() // Exibe a quantidade do Firestore
+            binding.carrinhoQuantidadeProduto.text = produto.quantidade.toString() // Mostra a quantidade no TextView
 
-            // Ações de alterar quantidade
+            // Ação de aumentar a quantidade
+            binding.carrinhoAumentarQuantidade.setOnClickListener {
+                produto.quantidade += 1
+                binding.carrinhoQuantidadeProduto.text = produto.quantidade.toString() // Atualiza a quantidade no TextView
+                onQuantidadeAlterada(produto, produto.quantidade)
+            }
+
+            // Ação de diminuir a quantidade
             binding.carrinhoDiminuirQuantidade.setOnClickListener {
                 if (produto.quantidade > 1) {
                     produto.quantidade -= 1
-                    binding.carrinhoQuantidadeProduto.text = produto.quantidade.toString() // Atualiza o texto na interface
-                    onQuantidadeAlterada(produto, produto.quantidade) // Atualiza no Firestore
+                    binding.carrinhoQuantidadeProduto.text = produto.quantidade.toString() // Atualiza a quantidade no TextView
+                    onQuantidadeAlterada(produto, produto.quantidade)
                 }
-            }
-
-            binding.carrinhoAumentarQuantidade.setOnClickListener {
-                produto.quantidade += 1
-                binding.carrinhoQuantidadeProduto.text = produto.quantidade.toString() // Atualiza o texto na interface
-                onQuantidadeAlterada(produto, produto.quantidade) // Atualiza no Firestore
             }
 
             // Ação para remover o produto
             binding.carrinhoRemoverProduto.setOnClickListener {
-                onProdutoRemovido(produto.id) // Passa o ID para remoção
+                onProdutoRemovido(produto.id) // Passa o ID do produto para remoção
             }
         }
     }

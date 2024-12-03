@@ -12,4 +12,18 @@
     <string name="aumentar_quantidade">Aumentar quantidade</string>
     <string name="diminuir_quantidade">Diminuir quantidade</string>
     <string name="produto_imagem">Imagem do produto</string>
+    <string name="confirmar_pedido">Confirmar Pedido</string>
+    <string name="total_do_pedido_r_0_00">Total do pedido: R$0.00</string>
+    <string name="voltar">Voltar</string>
+    <string name="_1">1</string>
+    <string name="nome_do_produto">Nome do Produto</string>
+    <string name="r_0_00">R$ 0,00</string>
+    <string name="quantidade">Quantidade:</string>
+    <string name="adicionar_ao_pedido">Adicionar ao Pedido</string>
+    <string name="imagem">Imagem</string>
+    <string name="seu_nome">Seu Nome:</string>
+    <string name="nome_do_usuario">Nome do Usuário</string>
+    <string name="seu_e_mail">Seu E-mail:</string>
+    <string name="email_example_com">email@example.com</string>
+    <string name="deletar_conta">Deletar Conta</string>
 </resources>

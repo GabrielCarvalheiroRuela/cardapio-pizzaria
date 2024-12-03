@@ -1,7 +1,6 @@
 package com.example.cardapio_pizzaria.ui
 
 import ProductAdapter
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -29,49 +28,39 @@ class MainActivity : AppCompatActivity() {
 
         // Ação do botão de deslogar
         binding.logoutButton.setOnClickListener {
-            // Ação do botão de deslogar
-            binding.logoutButton.setOnClickListener {
-                val currentUser = auth.currentUser
-                currentUser?.let { user ->
-                    // Acessa o documento do usuário no Firestore
-                    val userRef = FirebaseFirestore.getInstance().collection("user").document(user.uid)
+            val currentUser = auth.currentUser
+            currentUser?.let { user ->
+                // Acessa o documento do usuário no Firestore
+                val userRef = FirebaseFirestore.getInstance().collection("user").document(user.uid)
 
-                    // Remove o array de pedidos se existir
-                    userRef.update("pedidos", FieldValue.delete())
-                        .addOnSuccessListener {
-                            // Realiza o logout
-                            auth.signOut()
+                // Remove o array de pedidos se existir
+                userRef.update("pedidos", FieldValue.delete())
+                    .addOnSuccessListener {
+                        auth.signOut()
 
-                            // Redireciona para a tela de login
-                            val intent = Intent(this, LoginActivity::class.java)
-                            startActivity(intent)
-                            finish() // Finaliza a MainActivity
-                        }
-                        .addOnFailureListener { e ->
-                            println("Erro ao remover os pedidos: ${e.message}")
-                            // Realiza o logout mesmo que não tenha conseguido remover os pedidos
-                            auth.signOut()
+                        val intent = Intent(this, LoginActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                    .addOnFailureListener { e ->
+                        println("Erro ao remover os pedidos: ${e.message}")
+                        auth.signOut()
 
-                            // Redireciona para a tela de login
-                            val intent = Intent(this, LoginActivity::class.java)
-                            startActivity(intent)
-                            finish() // Finaliza a MainActivity
-                        }
-                } ?: run {
-                    // Caso não haja usuário logado, apenas realiza o logout
-                    auth.signOut()
+                        val intent = Intent(this, LoginActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+            } ?: run {
+                auth.signOut()
 
-                    // Redireciona para a tela de login
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
-                    finish() // Finaliza a MainActivity
-                }
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
             }
         }
 
         // Ação do botão de perfil
         binding.iconUser.setOnClickListener {
-            // Redireciona para a tela de perfil
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }

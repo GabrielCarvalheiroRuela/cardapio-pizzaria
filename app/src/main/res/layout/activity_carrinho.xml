@@ -22,6 +22,7 @@
             android:id="@+id/BackIcon"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:contentDescription="@string/voltar"
             android:src="@drawable/ic_back_button"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_marginEnd="16dp"
@@ -34,7 +35,6 @@
 
     </LinearLayout>
 
-
     <!-- RecyclerView Menu de items -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCarrinho"
@@ -43,4 +43,27 @@
         android:layout_weight="1"
         android:padding="8dp" />
 
+    <!-- TextView para valor total -->
+    <TextView
+        android:id="@+id/textViewTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/total_do_pedido_r_0_00"
+        android:textSize="18sp"
+        android:textColor="#000000"
+        android:gravity="center" />
+
+    <!-- Botão para confirmar o pedido -->
+    <Button
+        android:id="@+id/buttonConfirmarPedido"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="@string/confirmar_pedido"
+        android:textSize="16sp"
+        android:padding="16dp"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/orange_light"
+        android:textColor="#FFFFFF" />
 </LinearLayout>

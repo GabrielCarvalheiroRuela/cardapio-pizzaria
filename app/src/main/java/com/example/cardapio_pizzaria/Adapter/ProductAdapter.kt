@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cardapio_pizzaria.databinding.ItemCardProductBinding
 import com.example.cardapio_pizzaria.model.Produto
-import com.example.cardapio_pizzaria.ui.ProductDetailsActivity
+import com.example.cardapio_pizzaria.ui.ProdutoActivity
 
 class ProductAdapter(private val productList: List<Produto>) :
     RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
@@ -23,10 +23,10 @@ class ProductAdapter(private val productList: List<Produto>) :
                 .load(product.url)
                 .into(binding.productImage)
 
-            // Adicionando funcionalidade de clique no card
+            // Redirecionando para tela de produto de acordo com o card clicado
             binding.root.setOnClickListener {
                 val context = binding.root.context
-                val intent = Intent(context, ProductDetailsActivity::class.java).apply {
+                val intent = Intent(context, ProdutoActivity::class.java).apply {
                     putExtra("nome", product.nome)
                     putExtra("preco", product.preco)
                     putExtra("ingrediente", product.ingrediente)

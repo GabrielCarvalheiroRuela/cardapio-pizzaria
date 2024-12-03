@@ -30,7 +30,7 @@
         <activity android:name=".ui.MainActivity"></activity>
         <activity android:name=".ui.RegisterActivity"></activity>
         <activity android:name=".ui.ProfileActivity"></activity>
-        <activity android:name=".ui.ProductDetailsActivity"></activity>
+        <activity android:name=".ui.ProdutoActivity"></activity>
         <activity
             android:name=".ui.LoginActivity"
             android:theme="@style/Theme.Cardapiopizzaria"
