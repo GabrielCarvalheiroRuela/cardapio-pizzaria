@@ -86,7 +86,6 @@
                 android:backgroundTint="@color/gray_light"
                 android:layout_gravity="center_vertical"/>
 
-
             <Button
                 android:id="@+id/btnDoces"
                 android:layout_width="wrap_content"

@@ -1,6 +1,7 @@
 package com.example.cardapio_pizzaria.ui
 
 import ProductAdapter
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -48,6 +49,29 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // Filtro todos
+        binding.btnTodos.setOnClickListener {
+            limparRecyclerView()
+            carregarBebidas()
+            carregarPizzasDoces()
+            carregarPizzasSalgadas()
+        }
+        // Filtro Pizzas salgadas
+        binding.btnPizzas.setOnClickListener {
+            limparRecyclerView()
+            carregarPizzasSalgadas()
+        }
+        // Filtro Pizzas doces
+        binding.btnDoces.setOnClickListener {
+            limparRecyclerView()
+            carregarPizzasDoces()
+        }
+        // Filtro Bebidas
+        binding.btnBebidas.setOnClickListener {
+            limparRecyclerView()
+            carregarBebidas()
+        }
+
         // Configuração da RecyclerView
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = ProductAdapter(productList)
@@ -59,6 +83,7 @@ class MainActivity : AppCompatActivity() {
         carregarPizzasSalgadas()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun carregarBebidas() {
         val db = FirebaseFirestore.getInstance()
 
@@ -150,5 +175,10 @@ class MainActivity : AppCompatActivity() {
                 println("Erro ao carregar pizzas-doces: ${e.message}")
             }
     }
+    private fun limparRecyclerView() {
+        productList.clear() // Limpa a lista de produtos
+        adapter.notifyDataSetChanged() // Notifica o adapter para atualizar a RecyclerView
+    }
+
 
 }
