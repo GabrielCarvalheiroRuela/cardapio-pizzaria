@@ -98,16 +98,16 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.adapter = adapter
 
         // Chamada para carregar as bebidas
-        carregarBebidas()
-        carregarPizzasDoces()
         carregarPizzasSalgadas()
+        carregarPizzasDoces()
+        carregarBebidas()
     }
 
     private fun carregarTodosProdutos() {
         productList.clear()
-        carregarBebidas()
-        carregarPizzasDoces()
         carregarPizzasSalgadas()
+        carregarPizzasDoces()
+        carregarBebidas()
     }
 
     private fun carregarBebidas() {

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">cardapio-pizzaria</string>
+    <string name="app_name">Margherita Menu</string>
 
     <!-- Botao de categorias -->
     <string name="todos">Todos</string>
