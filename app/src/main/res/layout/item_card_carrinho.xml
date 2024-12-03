@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:background="@android:color/white">
+
+    <!-- Imagem do produto -->
+    <ImageView
+        android:id="@+id/carrinhoImagemProduto"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_placeholder" />
+
+    <!-- Informações do produto -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:paddingStart="8dp">
+
+        <TextView
+            android:id="@+id/carrinhoNomeProduto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nome do Produto"
+            android:textSize="16sp"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/carrinhoPrecoProduto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="R$ 00.00"
+            android:textSize="14sp"
+            android:textColor="#666666" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- Botão para diminuir quantidade -->
+            <ImageButton
+                android:id="@+id/carrinhoDiminuirQuantidade"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@drawable/ic_minus"
+                android:contentDescription="Diminuir quantidade" />
+
+            <!-- Quantidade atual -->
+            <TextView
+                android:id="@+id/carrinhoQuantidadeProduto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="1"
+                android:textSize="14sp"
+                android:gravity="center" />
+
+            <!-- Botão para aumentar quantidade -->
+            <ImageButton
+                android:id="@+id/carrinhoAumentarQuantidade"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@drawable/ic_plus"
+                android:contentDescription="Aumentar quantidade" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Botão para remover -->
+    <ImageButton
+        android:id="@+id/carrinhoRemoverProduto"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_delete"
+        android:contentDescription="Remover produto"
+        app:tint="@color/black" />
+</LinearLayout>

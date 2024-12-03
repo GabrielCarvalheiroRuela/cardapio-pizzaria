@@ -51,24 +51,22 @@ class MainActivity : AppCompatActivity() {
 
         // Filtro todos
         binding.btnTodos.setOnClickListener {
-            limparRecyclerView()
-            carregarBebidas()
-            carregarPizzasDoces()
-            carregarPizzasSalgadas()
+            productList.clear()
+            carregarTodosProdutos()
         }
         // Filtro Pizzas salgadas
         binding.btnPizzas.setOnClickListener {
-            limparRecyclerView()
+            productList.clear()
             carregarPizzasSalgadas()
         }
         // Filtro Pizzas doces
         binding.btnDoces.setOnClickListener {
-            limparRecyclerView()
+            productList.clear()
             carregarPizzasDoces()
         }
         // Filtro Bebidas
         binding.btnBebidas.setOnClickListener {
-            limparRecyclerView()
+            productList.clear()
             carregarBebidas()
         }
 
@@ -83,21 +81,24 @@ class MainActivity : AppCompatActivity() {
         carregarPizzasSalgadas()
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    private fun carregarTodosProdutos() {
+        productList.clear()
+        carregarBebidas()
+        carregarPizzasDoces()
+        carregarPizzasSalgadas()
+    }
+
     private fun carregarBebidas() {
         val db = FirebaseFirestore.getInstance()
 
-        // Pega o documento bebidas na coleção produtos
         db.collection("produtos").document("bebidas")
             .get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    // Pega a lista de itens no firestore
                     val itens = document.get("Itens") as? List<Map<String, Any>>
-
-                    // Converte a lista de mapas em objetos do tipo Produto
                     val produtos = itens?.map { item ->
                         Produto(
+                            id = item["id"] as? String ?: "",
                             nome = item["nome"] as? String ?: "",
                             preco = (item["preco"] as? Number)?.toDouble() ?: 0.0,
                             ingrediente = item["ingrediente"] as? String ?: "",
@@ -105,8 +106,6 @@ class MainActivity : AppCompatActivity() {
                         )
                     } ?: emptyList()
 
-                    // Atualiza a lista de produtos e notifica o Adapter
-                    productList.clear()
                     productList.addAll(produtos)
                     adapter.notifyDataSetChanged()
                 }
@@ -115,20 +114,18 @@ class MainActivity : AppCompatActivity() {
                 println("Erro ao carregar bebidas: ${e.message}")
             }
     }
+
     private fun carregarPizzasDoces() {
         val db = FirebaseFirestore.getInstance()
 
-        // Pega o documento pizzas-doce na coleção produtos
         db.collection("produtos").document("pizzas-doce")
             .get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    // Pega a lista de itens no firestore
                     val itens = document.get("itens") as? List<Map<String, Any>>
-
-                    // Converte a lista de mapas em objetos do tipo Produto
                     val produtos = itens?.map { item ->
                         Produto(
+                            id = item["id"] as? String ?: "",
                             nome = item["nome"] as? String ?: "",
                             preco = (item["preco"] as? Number)?.toDouble() ?: 0.0,
                             ingrediente = item["ingrediente"] as? String ?: "",
@@ -136,29 +133,26 @@ class MainActivity : AppCompatActivity() {
                         )
                     } ?: emptyList()
 
-                    // Adiciona as pizzas-doces à lista existente de produtos
                     productList.addAll(produtos)
-                    adapter.notifyDataSetChanged() // Notifica o adapter para atualizar a RecyclerView
+                    adapter.notifyDataSetChanged()
                 }
             }
             .addOnFailureListener { e ->
-                println("Erro ao carregar pizzas-doces: ${e.message}")
+                println("Erro ao carregar pizzas doces: ${e.message}")
             }
     }
+
     private fun carregarPizzasSalgadas() {
         val db = FirebaseFirestore.getInstance()
 
-        // Pega o documento pizzas-doce na coleção produtos
         db.collection("produtos").document("pizzas-salgada")
             .get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    // Pega a lista de itens no firestore
                     val itens = document.get("Itens") as? List<Map<String, Any>>
-
-                    // Converte a lista de mapas em objetos do tipo Produto
                     val produtos = itens?.map { item ->
                         Produto(
+                            id = item["id"] as? String ?: "",
                             nome = item["nome"] as? String ?: "",
                             preco = (item["preco"] as? Number)?.toDouble() ?: 0.0,
                             ingrediente = item["ingrediente"] as? String ?: "",
@@ -166,19 +160,13 @@ class MainActivity : AppCompatActivity() {
                         )
                     } ?: emptyList()
 
-                    // Adiciona as pizzas-doces à lista existente de produtos
                     productList.addAll(produtos)
-                    adapter.notifyDataSetChanged() // Notifica o adapter para atualizar a RecyclerView
+                    adapter.notifyDataSetChanged()
                 }
             }
             .addOnFailureListener { e ->
-                println("Erro ao carregar pizzas-doces: ${e.message}")
+                println("Erro ao carregar pizzas salgadas: ${e.message}")
             }
     }
-    private fun limparRecyclerView() {
-        productList.clear() // Limpa a lista de produtos
-        adapter.notifyDataSetChanged() // Notifica o adapter para atualizar a RecyclerView
-    }
-
 
 }
