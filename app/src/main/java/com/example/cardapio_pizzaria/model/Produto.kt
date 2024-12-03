@@ -4,7 +4,7 @@ data class Produto(
     var id: String,
     val nome: String,
     val preco: Double,
-    val ingrediente: String,
+    val ingredientes: String,
     val url: String,
     var quantidade: Int = 1
 )

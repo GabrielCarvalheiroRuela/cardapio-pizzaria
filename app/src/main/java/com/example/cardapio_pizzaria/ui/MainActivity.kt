@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity() {
                             id = item["id"] as? String ?: "",
                             nome = item["nome"] as? String ?: "",
                             preco = (item["preco"] as? Number)?.toDouble() ?: 0.0,
-                            ingrediente = item["ingrediente"] as? String ?: "",
+                            ingredientes = item["ingredientes"] as? String ?: "",
                             url = item["url"] as? String ?: ""
                         )
                     } ?: emptyList()
@@ -150,7 +150,7 @@ class MainActivity : AppCompatActivity() {
                             id = item["id"] as? String ?: "",
                             nome = item["nome"] as? String ?: "",
                             preco = (item["preco"] as? Number)?.toDouble() ?: 0.0,
-                            ingrediente = item["ingrediente"] as? String ?: "",
+                            ingredientes = item["ingredientes"] as? String ?: "",
                             url = item["url"] as? String ?: ""
                         )
                     } ?: emptyList()
@@ -167,17 +167,17 @@ class MainActivity : AppCompatActivity() {
     private fun carregarPizzasSalgadas() {
         val db = FirebaseFirestore.getInstance()
 
-        db.collection("produtos").document("pizzas-salgada")
+        db.collection("produtos").document("pizzas-salgadas")
             .get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    val itens = document.get("Itens") as? List<Map<String, Any>>
+                    val itens = document.get("itens") as? List<Map<String, Any>>
                     val produtos = itens?.map { item ->
                         Produto(
                             id = item["id"] as? String ?: "",
                             nome = item["nome"] as? String ?: "",
                             preco = (item["preco"] as? Number)?.toDouble() ?: 0.0,
-                            ingrediente = item["ingrediente"] as? String ?: "",
+                            ingredientes = item["ingredientes"] as? String ?: "",
                             url = item["url"] as? String ?: ""
                         )
                     } ?: emptyList()

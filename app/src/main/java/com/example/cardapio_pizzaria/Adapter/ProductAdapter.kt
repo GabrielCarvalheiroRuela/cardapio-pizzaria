@@ -17,7 +17,7 @@ class ProductAdapter(private val productList: List<Produto>) :
             // Configurando os cards
             binding.productName.text = product.nome
             binding.productPrice.text = "R$ ${product.preco}"
-            binding.productIngredient.text = product.ingrediente
+            binding.productIngredient.text = product.ingredientes
 
             Glide.with(binding.productImage.context)
                 .load(product.url)
@@ -29,7 +29,7 @@ class ProductAdapter(private val productList: List<Produto>) :
                 val intent = Intent(context, ProdutoActivity::class.java).apply {
                     putExtra("nome", product.nome)
                     putExtra("preco", product.preco)
-                    putExtra("ingrediente", product.ingrediente)
+                    putExtra("ingredientes", product.ingredientes)
                     putExtra("url", product.url)
                 }
                 context.startActivity(intent)

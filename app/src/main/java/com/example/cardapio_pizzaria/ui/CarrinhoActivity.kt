@@ -44,7 +44,7 @@ class CarrinhoActivity : AppCompatActivity() {
                                 preco = (pedido["preco"] as? Number)?.toDouble() ?: 0.0,
                                 quantidade = (pedido["quantidade"] as? Number)?.toInt() ?: 1,
                                 url = pedido["url"] as? String ?: "",
-                                ingrediente = pedido["ingrediente"] as? String ?: ""
+                                ingredientes = pedido["ingredientes"] as? String ?: ""
                             )
                         }
 
@@ -153,7 +153,7 @@ class CarrinhoActivity : AppCompatActivity() {
                                         preco = (produto["preco"] as? Number)?.toDouble() ?: 0.0,
                                         quantidade = produto["quantidade"] as? Int ?: 1,
                                         url = produto["url"] as? String ?: "",
-                                        ingrediente = produto["ingrediente"] as? String ?: ""
+                                        ingredientes = produto["ingredientes"] as? String ?: ""
                                     )
                                 })
                                 atualizarValorTotal()

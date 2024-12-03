@@ -24,7 +24,7 @@ class ProdutoActivity : AppCompatActivity() {
         val nome = intent.getStringExtra("nome") ?: "Produto"
         val preco = intent.getDoubleExtra("preco", 0.0)
         val url = intent.getStringExtra("url") ?: ""
-        val ingrediente = intent.getStringExtra("ingrediente") ?: ""
+        val ingrediente = intent.getStringExtra("ingredientes") ?: ""
 
         // Configurar dados na tela
         binding.productNameTextView.text = nome
@@ -55,7 +55,7 @@ class ProdutoActivity : AppCompatActivity() {
             "id" to produtoId,
             "nome" to nome,
             "preco" to preco,
-            "ingrediente" to ingrediente,
+            "ingredientes" to ingrediente,
             "quantidade" to quantidade,
             "url" to url
         )
