@@ -49,8 +49,12 @@ class ProductDetailsActivity : AppCompatActivity() {
     }
 
     private fun adicionarAoPedido(nome: String, preco: Double, ingrediente: String, quantidade: Int, url: String) {
-        // Adicionando o campo 'url' ao pedido
+        // Gerar um ID único para o produto usando o timestamp
+        val produtoId = System.currentTimeMillis().toString()
+
+        // Adicionando o campo 'id' ao pedido
         val pedidoItem = mapOf(
+            "id" to produtoId, // ID único para cada produto
             "nome" to nome,
             "preco" to preco,
             "ingrediente" to ingrediente,
@@ -88,5 +92,6 @@ class ProductDetailsActivity : AppCompatActivity() {
             Toast.makeText(this, "Usuário não autenticado!", Toast.LENGTH_SHORT).show()
         }
     }
+
 
 }

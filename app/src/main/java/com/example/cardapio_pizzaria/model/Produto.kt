@@ -1,7 +1,7 @@
 package com.example.cardapio_pizzaria.model
 
 data class Produto(
-    val id: String,
+    var id: String,
     val nome: String,
     val preco: Double,
     val ingrediente: String,

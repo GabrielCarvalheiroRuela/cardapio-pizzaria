@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cardapio_pizzaria.databinding.ActivityMainBinding
 import com.example.cardapio_pizzaria.model.Produto
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
@@ -28,12 +29,44 @@ class MainActivity : AppCompatActivity() {
 
         // Ação do botão de deslogar
         binding.logoutButton.setOnClickListener {
-            auth.signOut() // Realiza o logout
+            // Ação do botão de deslogar
+            binding.logoutButton.setOnClickListener {
+                val currentUser = auth.currentUser
+                currentUser?.let { user ->
+                    // Acessa o documento do usuário no Firestore
+                    val userRef = FirebaseFirestore.getInstance().collection("user").document(user.uid)
 
-            // Redireciona para a tela de login
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
+                    // Remove o array de pedidos se existir
+                    userRef.update("pedidos", FieldValue.delete())
+                        .addOnSuccessListener {
+                            // Realiza o logout
+                            auth.signOut()
+
+                            // Redireciona para a tela de login
+                            val intent = Intent(this, LoginActivity::class.java)
+                            startActivity(intent)
+                            finish() // Finaliza a MainActivity
+                        }
+                        .addOnFailureListener { e ->
+                            println("Erro ao remover os pedidos: ${e.message}")
+                            // Realiza o logout mesmo que não tenha conseguido remover os pedidos
+                            auth.signOut()
+
+                            // Redireciona para a tela de login
+                            val intent = Intent(this, LoginActivity::class.java)
+                            startActivity(intent)
+                            finish() // Finaliza a MainActivity
+                        }
+                } ?: run {
+                    // Caso não haja usuário logado, apenas realiza o logout
+                    auth.signOut()
+
+                    // Redireciona para a tela de login
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish() // Finaliza a MainActivity
+                }
+            }
         }
 
         // Ação do botão de perfil

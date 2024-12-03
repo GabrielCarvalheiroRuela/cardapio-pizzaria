@@ -1,7 +1,7 @@
 package com.example.cardapio_pizzaria.ui
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,14 +38,12 @@ class CarrinhoActivity : AppCompatActivity() {
                     if (pedidos.isEmpty()) {
                         Toast.makeText(this, "Nenhum pedido encontrado", Toast.LENGTH_SHORT).show()
                     } else {
-                        Log.d("CarrinhoActivity", "Pedidos recuperados: $pedidos")
-
                         val pedidosConvertidos = pedidos.map { pedido ->
                             Produto(
                                 id = pedido["id"] as? String ?: "",
                                 nome = pedido["nome"] as? String ?: "",
                                 preco = (pedido["preco"] as? Number)?.toDouble() ?: 0.0,
-                                quantidade = pedido["quantidade"] as? Int ?: 1,
+                                quantidade = pedido["quantidade"] as? Int ?: 1,  // Aqui o valor da quantidade deve ser retirado do Firestore
                                 url = pedido["url"] as? String ?: "",
                                 ingrediente = pedido["ingrediente"] as? String ?: ""
                             )
@@ -54,12 +52,12 @@ class CarrinhoActivity : AppCompatActivity() {
                         // Configura o adapter do RecyclerView
                         adapter = CarrinhoAdapter(
                             pedidosConvertidos.toMutableList(),
-                            onQuantidadeAlterada = { produto, novaQuantidade ->
-                                produto.quantidade = novaQuantidade
-                                atualizarPedidoNoFirestore(produto)
+                            onQuantidadeAlterada = { produtoId, novaQuantidade ->
+                                produtoId.quantidade = novaQuantidade
+                                atualizarPedidoNoFirestore(produtoId) // Atualiza a quantidade no Firestore
                             },
-                            onProdutoRemovido = { produto ->
-                                removerProdutoDoFirestore(produto)
+                            onProdutoRemovido = { produtoId ->
+                                removerProdutoDoFirestore(produtoId) // Passa o ID para remoção
                             }
                         )
 
@@ -75,6 +73,12 @@ class CarrinhoActivity : AppCompatActivity() {
         } ?: run {
             Toast.makeText(this, "Usuário não autenticado", Toast.LENGTH_SHORT).show()
         }
+
+        // Configuração do botão voltar para a MainActivity
+        binding.BackIcon.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish() // Finaliza a CarrinhoActivity para não ficar na pilha de atividades
+        }
     }
 
     private fun atualizarPedidoNoFirestore(produto: Produto) {
@@ -82,8 +86,7 @@ class CarrinhoActivity : AppCompatActivity() {
             val userRef = db.collection("user").document(usuario.uid)
 
             // Atualiza a quantidade do produto no Firestore
-            val pedidoRef = userRef.collection("pedidos").document(produto.id)  // Usando o ID do produto
-            pedidoRef.update("quantidade", produto.quantidade)
+            userRef.collection("pedidos").document(produto.id).update("quantidade", produto.quantidade)
                 .addOnSuccessListener {
                     Toast.makeText(this, "Quantidade atualizada!", Toast.LENGTH_SHORT).show()
                 }
@@ -93,18 +96,49 @@ class CarrinhoActivity : AppCompatActivity() {
         }
     }
 
-    private fun removerProdutoDoFirestore(produto: Produto) {
+    private fun removerProdutoDoFirestore(produtoId: String) {
         user?.let { usuario ->
             val userRef = db.collection("user").document(usuario.uid)
 
-            // Remove o produto do array "pedidos" no Firestore
-            userRef.update("pedidos", FieldValue.arrayRemove(produto))
-                .addOnSuccessListener {
-                    Toast.makeText(this, "Produto removido do pedido!", Toast.LENGTH_SHORT).show()
+            // Recupera a lista de pedidos do Firestore
+            userRef.get().addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val pedidos = document.get("pedidos") as? List<Map<String, Any>> ?: emptyList()
+
+                    // Encontre o produto no array de pedidos usando o id
+                    val produtoParaRemover = pedidos.find { it["id"] == produtoId }
+
+                    produtoParaRemover?.let {
+                        // Remover o produto com o map completo
+                        userRef.update("pedidos", FieldValue.arrayRemove(it))
+                            .addOnSuccessListener {
+                                // Atualize o adapter após a remoção
+                                val pedidosAtualizados = pedidos.filter { it["id"] != produtoId }
+                                adapter.atualizarLista(pedidosAtualizados.map { produto ->
+                                    Produto(
+                                        id = produto["id"] as? String ?: "",
+                                        nome = produto["nome"] as? String ?: "",
+                                        preco = (produto["preco"] as? Number)?.toDouble() ?: 0.0,
+                                        quantidade = produto["quantidade"] as? Int ?: 1,
+                                        url = produto["url"] as? String ?: "",
+                                        ingrediente = produto["ingrediente"] as? String ?: ""
+                                    )
+                                })
+                                Toast.makeText(this, "Produto removido do pedido!", Toast.LENGTH_SHORT).show()
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(this, "Erro ao remover o produto!", Toast.LENGTH_SHORT).show()
+                            }
+                    } ?: run {
+                        Toast.makeText(this, "Produto não encontrado para remoção.", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this, "Erro ao acessar os pedidos.", Toast.LENGTH_SHORT).show()
                 }
-                .addOnFailureListener {
-                    Toast.makeText(this, "Erro ao remover o produto!", Toast.LENGTH_SHORT).show()
-                }
+            }.addOnFailureListener {
+                Toast.makeText(this, "Erro ao buscar os pedidos.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
+
