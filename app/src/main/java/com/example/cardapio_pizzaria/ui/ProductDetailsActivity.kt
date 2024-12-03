@@ -41,19 +41,21 @@ class ProductDetailsActivity : AppCompatActivity() {
             val quantidade = binding.quantityEditText.text.toString().toIntOrNull()
 
             if (quantidade != null && quantidade > 0) {
-                adicionarAoPedido(nome, preco, ingrediente, quantidade)
+                adicionarAoPedido(nome, preco, ingrediente, quantidade, url)
             } else {
                 Toast.makeText(this, "Por favor, insira uma quantidade válida!", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun adicionarAoPedido(nome: String, preco: Double, ingrediente: String, quantidade: Int) {
+    private fun adicionarAoPedido(nome: String, preco: Double, ingrediente: String, quantidade: Int, url: String) {
+        // Adicionando o campo 'url' ao pedido
         val pedidoItem = mapOf(
             "nome" to nome,
             "preco" to preco,
             "ingrediente" to ingrediente,
-            "quantidade" to quantidade
+            "quantidade" to quantidade,
+            "url" to url // Aqui está o ajuste, agora o URL da imagem também será salvo
         )
 
         user?.let { usuario ->
@@ -61,7 +63,7 @@ class ProductDetailsActivity : AppCompatActivity() {
 
             userRef.get().addOnSuccessListener { document ->
                 if (document.exists()) {
-                    // Atualizar o array de pedidos no documento do usuário
+                    // Atualiza o array de pedidos no documento do usuário
                     userRef.update("pedidos", FieldValue.arrayUnion(pedidoItem))
                         .addOnSuccessListener {
                             Toast.makeText(this, "Produto adicionado ao pedido!", Toast.LENGTH_SHORT).show()
@@ -71,7 +73,7 @@ class ProductDetailsActivity : AppCompatActivity() {
                             Toast.makeText(this, "Erro ao adicionar ao pedido!", Toast.LENGTH_SHORT).show()
                         }
                 } else {
-                    // Criar um documento com o array inicial
+                    // Cria um novo documento com o array inicial de pedidos
                     userRef.set(mapOf("pedidos" to listOf(pedidoItem)))
                         .addOnSuccessListener {
                             Toast.makeText(this, "Produto adicionado ao pedido!", Toast.LENGTH_SHORT).show()
@@ -86,4 +88,5 @@ class ProductDetailsActivity : AppCompatActivity() {
             Toast.makeText(this, "Usuário não autenticado!", Toast.LENGTH_SHORT).show()
         }
     }
+
 }

@@ -17,15 +17,33 @@ class CarrinhoAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(produto: Produto) {
-            // Configura o produto
+            // Carrega a imagem com Glide, com placeholder e erro em caso de falha
             Glide.with(binding.carrinhoImagemProduto.context)
                 .load(produto.url)
+                .placeholder(com.example.cardapio_pizzaria.R.drawable.ic_placeholder) // Substitua pelo seu ícone de placeholder
+                .error(com.example.cardapio_pizzaria.R.drawable.ic_placeholder) // Substitua pelo seu ícone de erro
                 .into(binding.carrinhoImagemProduto)
 
+            // Configura o nome e o preço
             binding.carrinhoNomeProduto.text = produto.nome
             binding.carrinhoPrecoProduto.text = "R$ ${produto.preco}"
             binding.carrinhoQuantidadeProduto.text = produto.quantidade.toString()
 
+            // Ações de alterar quantidade
+            binding.carrinhoDiminuirQuantidade.setOnClickListener {
+                if (produto.quantidade > 1) {
+                    onQuantidadeAlterada(produto, produto.quantidade - 1)
+                }
+            }
+
+            binding.carrinhoAumentarQuantidade.setOnClickListener {
+                onQuantidadeAlterada(produto, produto.quantidade + 1)
+            }
+
+            // Ação para remover o produto
+            binding.carrinhoRemoverProduto.setOnClickListener {
+                onProdutoRemovido(produto)
+            }
         }
     }
 
@@ -41,7 +59,7 @@ class CarrinhoAdapter(
 
     override fun getItemCount(): Int = pedidos.size
 
-    // Atualiza a lista de pedidos
+    // Atualiza a lista de pedidos no adaptador
     fun atualizarLista(novaLista: List<Produto>) {
         pedidos.clear()
         pedidos.addAll(novaLista)

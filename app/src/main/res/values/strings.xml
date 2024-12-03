@@ -8,4 +8,8 @@
     <string name="doces">Pizzas doces</string>
     <string name="bebidas">Bebidas</string>
     <string name="vinhos">Vinhos</string>
+    <string name="remover_produto">Remover produto</string>
+    <string name="aumentar_quantidade">Aumentar quantidade</string>
+    <string name="diminuir_quantidade">Diminuir quantidade</string>
+    <string name="produto_imagem">Imagem do produto</string>
 </resources>

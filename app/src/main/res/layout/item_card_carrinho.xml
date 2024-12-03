@@ -14,7 +14,8 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_placeholder" />
+        android:src="@drawable/ic_placeholder"
+        android:contentDescription="@string/produto_imagem" /> <!-- Adiciona descrição para acessibilidade -->
 
     <!-- Informações do produto -->
     <LinearLayout
@@ -22,16 +23,21 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_weight="1"
-        android:paddingStart="8dp">
+        android:paddingStart="8dp"
+        android:gravity="start">
 
+        <!-- Nome do produto -->
         <TextView
             android:id="@+id/carrinhoNomeProduto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Nome do Produto"
             android:textSize="16sp"
-            android:textColor="#000000" />
+            android:textColor="#000000"
+            android:maxLines="1"
+            android:ellipsize="end" /> <!-- Evita que o nome ultrapasse o limite da tela -->
 
+        <!-- Preço do produto -->
         <TextView
             android:id="@+id/carrinhoPrecoProduto"
             android:layout_width="wrap_content"
@@ -40,6 +46,7 @@
             android:textSize="14sp"
             android:textColor="#666666" />
 
+        <!-- Linhas para ajustar os botões de quantidade -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,7 +59,7 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:background="@drawable/ic_minus"
-                android:contentDescription="Diminuir quantidade" />
+                android:contentDescription="@string/diminuir_quantidade" />
 
             <!-- Quantidade atual -->
             <TextView
@@ -70,16 +77,18 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:background="@drawable/ic_plus"
-                android:contentDescription="Aumentar quantidade" />
+                android:contentDescription="@string/aumentar_quantidade" />
+
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Botão para remover -->
+    <!-- Botão para remover produto -->
     <ImageButton
         android:id="@+id/carrinhoRemoverProduto"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:src="@drawable/ic_delete"
-        android:contentDescription="Remover produto"
+        android:contentDescription="@string/remover_produto"
+        android:background="?attr/selectableItemBackgroundBorderless"
         app:tint="@color/black" />
 </LinearLayout>
